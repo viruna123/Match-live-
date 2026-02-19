@@ -1,0 +1,21 @@
+name: Cricket Live Stream
+on: [push, workflow_dispatch]
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          pip install -r requirements.txt
+      - name: Start Auto Stream
+        env:
+          STREAM_KEY: ${{ secrets.STREAM_KEY }}
+        run: python live.py
